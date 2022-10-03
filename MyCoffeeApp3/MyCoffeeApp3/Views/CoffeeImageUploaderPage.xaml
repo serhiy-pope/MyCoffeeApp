@@ -1,0 +1,54 @@
+﻿<?xml version="1.0" encoding="utf-8" ?>
+<ContentPage xmlns="http://xamarin.com/schemas/2014/forms"
+             xmlns:x="http://schemas.microsoft.com/winfx/2009/xaml"
+             x:Class="MyCoffeeApp3.Views.CoffeeImageUploaderPage"
+             xmlns:fontAwesome="clr-namespace:FontAwesome"
+             Title="Coffee Image Uploader"
+             BackgroundColor="{AppThemeBinding 
+                            Dark={StaticResource WindowBackgroundColorDark}, 
+                            Light={StaticResource WindowBackgroundColor}}">
+    <ContentPage.Content>
+        <StackLayout Padding="10" 
+                     HorizontalOptions="FillAndExpand">
+            <StackLayout Orientation="Horizontal"
+                         HorizontalOptions="CenterAndExpand">
+                <Label Text="{x:Static fontAwesome:FontAwesomeIcons.GlassWhiskey}"
+                       HorizontalOptions="Center"
+                       FontSize="Large"
+                       FontFamily="FAS"
+                       Margin="0,10,0,0"
+                       TextColor="{AppThemeBinding 
+                            Dark={StaticResource SystemGrayDark}, 
+                            Light={StaticResource SystemGray4Dark}}"/>
+                <Label Text="Image Upload Page!"
+                       HorizontalTextAlignment="Center"
+                       TextColor="{AppThemeBinding 
+                            Dark={StaticResource SystemGrayDark}, 
+                            Light={StaticResource SystemOliveDrab}}"
+                       FontSize="Large"
+                       FontFamily="AC"
+                       Margin="0,10,0,0"/>
+            </StackLayout>
+
+            <Frame Margin="20,100,20,100" 
+                   CornerRadius="10"
+                   HasShadow="True"
+                   BackgroundColor="{AppThemeBinding 
+                            Dark={StaticResource SystemGray5Dark}, 
+                            Light={StaticResource SystemCadetBlue}}">
+                <Label x:Name="StatusLabel" 
+                       Text="Upload Status Code"
+                       HorizontalTextAlignment="Center"
+                       FontSize="Title"
+                       TextColor="{AppThemeBinding 
+                            Dark={StaticResource SystemGrayDark}, 
+                            Light={StaticResource SystemGray4Dark}}"/>
+            </Frame>
+
+            <Button Text="Pick and Upload file" 
+                    Margin="0,100,0,0"
+                    Clicked="Button_Clicked"
+                    Style="{StaticResource ButtonOutline}"/>
+        </StackLayout>
+    </ContentPage.Content>
+</ContentPage>

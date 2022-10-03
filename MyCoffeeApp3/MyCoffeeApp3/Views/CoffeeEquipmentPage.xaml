@@ -1,0 +1,115 @@
+﻿<?xml version="1.0" encoding="utf-8" ?>
+<ContentPage              
+    x:Class="MyCoffeeApp3.Views.CoffeeEquipmentPage"
+    xmlns="http://xamarin.com/schemas/2014/forms"
+    xmlns:x="http://schemas.microsoft.com/winfx/2009/xaml"    
+    xmlns:model="clr-namespace:MyCoffeeApp3.Shared.Models;assembly=MyCoffeeApp3.Shared"
+    xmlns:mvvm="clr-namespace:MvvmHelpers;assembly=MvvmHelpers"
+    xmlns:viewmodels="clr-namespace:MyCoffeeApp3.ViewModels"
+    xmlns:xct="http://xamarin.com/schemas/2020/toolkit"
+    xmlns:fontAwesome="clr-namespace:FontAwesome" 
+    xmlns:cells="clr-namespace:MyCoffeeApp3.Cells"
+    x:Name="CoffeePage"
+    Title="Coffee Equipment LV"
+    x:DataType="viewmodels:CoffeeEquipmentViewModel"
+    BackgroundColor="{AppThemeBinding 
+                    Dark={StaticResource WindowBackgroundColorDark}, 
+                    Light={StaticResource WindowBackgroundColor}}">
+    <ContentPage.BindingContext>
+        <viewmodels:CoffeeEquipmentViewModel/>
+    </ContentPage.BindingContext>
+
+    <ContentPage.Resources>
+        <ResourceDictionary>            
+            <xct:ItemSelectedEventArgsConverter x:Key="ItemSelectedEventArgsConverter"/>
+
+            <DataTemplate x:Key="Normal">
+                <ViewCell>
+                    <ViewCell.ContextActions>
+                        <MenuItem 
+                            Command="{Binding Source={x:Reference CoffeePage}, Path=BindingContext.FavoriteCommand}"
+                            CommandParameter="{Binding .}"
+                            Text="Favorite"/>
+                        <MenuItem Text="Delete" IsDestructive="True"/>
+                    </ViewCell.ContextActions>
+                    <cells:CoffeeCard/>
+                </ViewCell>
+            </DataTemplate>
+
+            <DataTemplate x:Key="Special">
+                <ViewCell>
+                    <cells:SpecialCell/>
+                </ViewCell>
+            </DataTemplate>
+
+            <cells:CoffeeDataTemplateSelector x:Key="CoffeeSelector"
+                                              Normal="{StaticResource Normal}"
+                                              Special="{StaticResource Special}"/>
+        </ResourceDictionary>
+    </ContentPage.Resources>
+
+    <ContentPage.ToolbarItems>
+        <ToolbarItem Text="Logout" Clicked="ToolbarItem_Clicked"/>
+    </ContentPage.ToolbarItems>
+
+    <ListView 
+        CachingStrategy="RecycleElement"
+        GroupDisplayBinding="{Binding Key}"
+        IsGroupingEnabled="True"
+        IsPullToRefreshEnabled="True"
+        IsRefreshing="{Binding IsBusy, Mode=OneWay}"
+        ItemsSource="{Binding CoffeeGroups}"
+        RefreshCommand="{Binding RefreshCommand}"
+        SelectedItem="{Binding SelectedCoffee, Mode=TwoWay}"
+        Style="{StaticResource CoffeeListView}"
+        ItemTemplate="{StaticResource CoffeeSelector}">
+        <ListView.Behaviors>
+            <xct:EventToCommandBehavior
+                EventName="ItemSelected"
+                Command="{Binding SelectedCommand}"
+                EventArgsConverter="{StaticResource ItemSelectedEventArgsConverter}"/>
+        </ListView.Behaviors>
+        <ListView.GroupHeaderTemplate>
+            <DataTemplate x:DataType="{x:Null}">
+                <ViewCell>
+                    <StackLayout Padding="20,10">
+                        <Label Style="{StaticResource LabelLarge}" 
+                               Text="{Binding Key}" 
+                               FontFamily="AC"/>
+                    </StackLayout>
+                </ViewCell>
+            </DataTemplate>
+        </ListView.GroupHeaderTemplate>
+
+        <ListView.Header>
+            <StackLayout Orientation="Horizontal"
+                         HorizontalOptions="Center">                
+                <Label Text="{x:Static fontAwesome:FontAwesomeIcons.Coffee}"
+                       HorizontalOptions="Center"
+                       Style="{StaticResource LabelLarge}"
+                       FontFamily="FAS"
+                       Margin="0,20,0,10"/>
+                <Label Text="Coffees of the World"
+                       HorizontalOptions="Center"
+                       Style="{StaticResource LabelLarge}"
+                       FontFamily="AC"
+                       Margin="0,20,0,10">
+                       <Label.GestureRecognizers>
+                            <TapGestureRecognizer Tapped="TapGestureRecognizer_Tapped" />
+                       </Label.GestureRecognizers>
+                </Label>
+            </StackLayout>
+        </ListView.Header>
+
+        <ListView.Footer>
+            <StackLayout Orientation="Horizontal"
+                         HorizontalOptions="Center">
+                <Button Command="{Binding LoadMoreCommand}"
+                        Style="{StaticResource ButtonOutline}"
+                        Text="Load More"/>
+            </StackLayout>
+        </ListView.Footer>
+
+    </ListView>
+
+</ContentPage>

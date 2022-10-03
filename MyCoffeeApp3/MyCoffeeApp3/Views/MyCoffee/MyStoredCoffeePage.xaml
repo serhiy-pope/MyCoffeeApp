@@ -1,0 +1,96 @@
+﻿<?xml version="1.0" encoding="utf-8" ?>
+<ContentPage
+    x:Class="MyCoffeeApp3.Views.MyStoredCoffeePage"
+    xmlns="http://xamarin.com/schemas/2014/forms"
+    xmlns:x="http://schemas.microsoft.com/winfx/2009/xaml"
+    xmlns:model="clr-namespace:MyCoffeeApp3.Shared.Models;assembly=MyCoffeeApp3.Shared"
+    xmlns:mvvm="clr-namespace:MvvmHelpers;assembly=MvvmHelpers"
+    xmlns:viewmodels="clr-namespace:MyCoffeeApp3.ViewModels"
+    xmlns:xct="http://xamarin.com/schemas/2020/toolkit"
+    xmlns:fontAwesome="clr-namespace:FontAwesome"
+    x:Name="MyCoffeePage"
+    Title="Stored Coffee Page"
+    x:DataType="viewmodels:MyCoffeeViewModel"
+    BackgroundColor="{AppThemeBinding 
+                    Dark={StaticResource WindowBackgroundColorDark}, 
+                    Light={StaticResource WindowBackgroundColor}}">
+    <ContentPage.BindingContext>
+        <viewmodels:MyCoffeeViewModel />
+    </ContentPage.BindingContext>
+
+    <ContentPage.Resources>
+        <ResourceDictionary>
+            <xct:ItemSelectedEventArgsConverter x:Key="ItemSelectedEventArgsConverter" />
+        </ResourceDictionary>
+    </ContentPage.Resources>
+
+    <ContentPage.ToolbarItems>
+        <ToolbarItem Text="Add" Command="{Binding AddCommand}"/>
+    </ContentPage.ToolbarItems>
+
+
+    <ListView
+        CachingStrategy="RecycleElement"
+        IsRefreshing="{Binding IsBusy, Mode=OneWay}"
+        ItemsSource="{Binding Coffee}"
+        RefreshCommand="{Binding RefreshCommand}"
+        SelectionMode="Single"
+        Style="{StaticResource CoffeeListView}">
+        <ListView.Behaviors>
+            <xct:EventToCommandBehavior
+                EventName="ItemSelected"
+                Command="{Binding SelectedCommand}"                
+                EventArgsConverter="{StaticResource ItemSelectedEventArgsConverter}"/>
+        </ListView.Behaviors>
+        <ListView.ItemTemplate>
+            <DataTemplate x:DataType="model:Coffee">
+                <ViewCell>
+                    <ViewCell.ContextActions>
+                        <MenuItem
+                            Command="{Binding Source={x:Reference MyCoffeePage}, Path=BindingContext.RemoveCommand}"
+                            CommandParameter="{Binding .}"
+                            IsDestructive="True"
+                            Text="Delete" />
+                    </ViewCell.ContextActions>
+                    <Grid Padding="10">
+                        <Frame  Style="{StaticResource CoffeeCard}">
+                            <StackLayout Orientation="Horizontal">
+                                <Image Source="{Binding Image}" WidthRequest="66" />
+                                <StackLayout VerticalOptions="Center">
+                                    <Label
+                                        Style="{StaticResource LabelLarge}"
+                                        Text="{Binding Name}"
+                                        VerticalOptions="Center" />
+                                    <Label
+                                        Style="{StaticResource LabelLarge}"
+                                        Text="{Binding Roaster}"
+                                        VerticalOptions="Center" />
+                                    <Label
+                                        Style="{StaticResource LabelSmall}"
+                                        Text="{Binding Id}"
+                                        VerticalOptions="Center" />
+                                </StackLayout>
+                            </StackLayout>
+                        </Frame>
+                    </Grid>
+                </ViewCell>
+            </DataTemplate>
+        </ListView.ItemTemplate>
+        <ListView.Header>
+            <StackLayout Orientation="Horizontal"
+                         HorizontalOptions="Center">
+                <Label Text="{x:Static fontAwesome:FontAwesomeIcons.GlassWhiskey}"
+                       HorizontalOptions="Center"
+                       FontSize="Large"
+                       FontFamily="FAS"
+                       Margin="0,10,0,0"/>
+                <Label Text="My Coffees!"
+                       HorizontalOptions="Center"
+                       FontSize="Large"
+                       FontFamily="AC"
+                       Margin="0,10,0,0">
+                </Label>
+            </StackLayout>
+        </ListView.Header>
+    </ListView>
+</ContentPage>

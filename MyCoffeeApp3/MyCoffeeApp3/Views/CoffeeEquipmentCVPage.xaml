@@ -1,0 +1,104 @@
+﻿<?xml version="1.0" encoding="utf-8" ?>
+<ContentPage              
+    x:Class="MyCoffeeApp3.Views.CoffeeEquipmentCVPage"
+    xmlns="http://xamarin.com/schemas/2014/forms"
+    xmlns:x="http://schemas.microsoft.com/winfx/2009/xaml"
+    xmlns:android="clr-namespace:Xamarin.Forms.PlatformConfiguration.AndroidSpecific;assembly=Xamarin.Forms.Core"
+    xmlns:model="clr-namespace:MyCoffeeApp3.Shared.Models;assembly=MyCoffeeApp3.Shared"
+    xmlns:mvvm="clr-namespace:MvvmHelpers;assembly=MvvmHelpers"
+    xmlns:viewmodels="clr-namespace:MyCoffeeApp3.ViewModels"
+    xmlns:fontAwesome="clr-namespace:FontAwesome" xmlns:cells="clr-namespace:MyCoffeeApp3.Cells"
+    x:Name="CoffeePage"
+    Title="Coffee Equipment CV"
+    BackgroundColor="{AppThemeBinding 
+                    Dark={StaticResource WindowBackgroundColorDark}, 
+                    Light={StaticResource WindowBackgroundColor}}">
+    <ContentPage.BindingContext>
+        <viewmodels:CoffeeEquipmentViewModel/>
+    </ContentPage.BindingContext>
+    <RefreshView
+        Command="{Binding RefreshCommand}"
+        IsRefreshing="{Binding IsBusy, Mode=OneWay}">
+
+        <CollectionView 
+            IsGrouped="True"
+            ItemSizingStrategy="MeasureAllItems"
+            ItemsLayout="VerticalList"
+            ItemsSource="{Binding CoffeeGroups}"
+            RemainingItemsThreshold="1"
+            RemainingItemsThresholdReachedCommand="{Binding DelayLoadMoreCommand}"
+            SelectedItem="{Binding SelectedCoffe, Mode=TwoWay}"
+            SelectionMode="Single">
+            <CollectionView.EmptyView>
+                <StackLayout Padding="12">
+                    <Label HorizontalOptions="Center" Text="No Coffee"/>
+                </StackLayout>
+            </CollectionView.EmptyView>
+            <CollectionView.GroupHeaderTemplate>
+                <DataTemplate>
+                    <StackLayout Padding="20,10">
+                        <Label Text="{Binding Key}" 
+                               FontSize="Large" 
+                               FontFamily="AC" 
+                               Style="{StaticResource LabelLarge}" />
+                    </StackLayout>
+                </DataTemplate>
+            </CollectionView.GroupHeaderTemplate>
+            <CollectionView.ItemTemplate>
+                <DataTemplate>
+                    <SwipeView android:SwipeView.SwipeTransitionMode="Drag">
+                        <SwipeView.RightItems >
+                            <SwipeItems>
+                                <SwipeItem
+                                    BackgroundColor="{AppThemeBinding Dark={StaticResource SystemGray5Dark},
+                                                       Light={StaticResource SystemLightSkyBlue}}"
+                                    Command="{Binding Source={RelativeSource AncestorType={x:Type viewmodels:CoffeeEquipmentViewModel}}, Path=FavoriteCommand}"
+                                    CommandParameter="{Binding .}"
+                                    Text="Favorite"/>
+                                <SwipeItem 
+                                    BackgroundColor="{AppThemeBinding Dark={StaticResource SystemGray4Dark},
+                                                       Light={StaticResource SystemLightPink}}"
+                                    IsDestructive="True"
+                                    Text="Delete" />
+                            </SwipeItems>
+                        </SwipeView.RightItems>
+
+                        <cells:CoffeeCard/>
+                        
+                    </SwipeView>
+                </DataTemplate>
+            </CollectionView.ItemTemplate>
+
+            <CollectionView.Header>
+                <StackLayout Orientation="Horizontal"
+                             HorizontalOptions="CenterAndExpand">
+                    <Label Text="{x:Static fontAwesome:FontAwesomeIcons.MugHot}"
+                       HorizontalOptions="Center"
+                       Style="{StaticResource LabelLarge}"
+                       FontFamily="FAS"
+                       Margin="65,20,0,10"/>
+                    <Label Text="Coffees of the World"
+                       HorizontalOptions="Center"
+                       Style="{StaticResource LabelLarge}"
+                       FontFamily="AC"
+                       Margin="0,20,0,10"/>                    
+                </StackLayout>
+            </CollectionView.Header>
+            
+            <CollectionView.Footer>
+                <StackLayout Orientation="Horizontal"
+                             HorizontalOptions="Center">
+                    <Button 
+                        Command="{Binding LoadMoreCommand}"
+                        Style="{StaticResource ButtonOutline}"
+                        Text="Load More"/>
+                    <Button 
+                        Command="{Binding ClearCommand}"
+                        Style="{StaticResource ButtonOutline}"
+                        Text="Clear"/>
+                </StackLayout>
+            </CollectionView.Footer>
+            
+        </CollectionView>
+    </RefreshView>
+</ContentPage>

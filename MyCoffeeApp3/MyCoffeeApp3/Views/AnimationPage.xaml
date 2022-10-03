@@ -1,0 +1,33 @@
+﻿<?xml version="1.0" encoding="utf-8" ?>
+<ContentPage xmlns="http://xamarin.com/schemas/2014/forms"
+             xmlns:x="http://schemas.microsoft.com/winfx/2009/xaml"
+             xmlns:viewmodels="clr-namespace:MyCoffeeApp3.ViewModels"
+             x:Class="MyCoffeeApp3.Views.AnimationPage"
+             x:DataType="viewmodels:ImageCacheViewModel"
+             Title="Animations"
+             xmlns:fontawesome="clr-namespace:FontAwesome"
+             xmlns:helpers="clr-namespace:MyCoffeeApp3.Helpers"
+             BackgroundColor="{AppThemeBinding 
+                                Dark={StaticResource WindowBackgroundColorDark}, 
+                                Light={StaticResource WindowBackgroundColor}}">
+    <ContentPage.BindingContext>
+        <viewmodels:ImageCacheViewModel />
+    </ContentPage.BindingContext>
+
+    <StackLayout VerticalOptions="End">
+        <Label Text="{x:Static fontawesome:FontAwesomeIcons.Spinner}"
+               FontFamily="FAS" 
+               x:Name="LabelLoad"
+               FontSize="80"
+               Style="{StaticResource LabelLarge}"
+               TextColor="Black"
+               HorizontalOptions="Center"
+               Margin="0,200,0,200"/>
+
+        <Button Text="Animate" 
+                IsEnabled="{Binding IsNotBusy}"
+                Command="{Binding RefreshLongCommand}"
+                Style="{StaticResource ButtonOutline}"
+                Margin="0,0,0,30"/>
+    </StackLayout>
+</ContentPage>

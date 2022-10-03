@@ -1,0 +1,26 @@
+﻿<?xml version="1.0" encoding="utf-8" ?>
+<Grid 
+    x:Class="MyCoffeeApp3.Cells.CoffeeCard"
+    xmlns="http://xamarin.com/schemas/2014/forms"
+    xmlns:x="http://schemas.microsoft.com/winfx/2009/xaml"
+    xmlns:models="clr-namespace:MyCoffeeApp3.Shared.Models;assembly=MyCoffeeApp3.Shared"
+    x:DataType="models:Coffee"
+    Padding="10"
+    BackgroundColor="{AppThemeBinding Dark={StaticResource WindowBackgroundColorDark}, 
+                                      Light={StaticResource WindowBackgroundColor}}">
+    <Frame Style="{StaticResource CoffeeCard}">
+        <StackLayout Orientation="Horizontal">
+            <Image Source="{Binding Image}" WidthRequest="66" />
+            <StackLayout VerticalOptions="Center">
+                <Label 
+                        Style="{StaticResource LabelLarge}"
+                        Text="{Binding Name}"
+                        VerticalOptions="Center"/>
+                <Label 
+                        Style="{StaticResource LabelLarge}"
+                        Text="{Binding Roaster}"
+                        VerticalOptions="Center"/>
+            </StackLayout>
+        </StackLayout>
+    </Frame>
+</Grid>

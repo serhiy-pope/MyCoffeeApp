@@ -1,0 +1,37 @@
+﻿<?xml version="1.0" encoding="utf-8" ?>
+<ContentPage xmlns="http://xamarin.com/schemas/2014/forms"
+             xmlns:x="http://schemas.microsoft.com/winfx/2009/xaml"
+             x:Class="MyCoffeeApp3.Views.LoginPage"
+             Shell.FlyoutBehavior="Disabled"
+             Shell.NavBarIsVisible="False"
+             BackgroundColor="{AppThemeBinding 
+                            Dark={StaticResource WindowBackgroundColorDark}, 
+                            Light={StaticResource WindowBackgroundColor}}">
+    <ContentPage.Content>
+        <StackLayout Padding="40" VerticalOptions="Center"
+                     HorizontalOptions="FillAndExpand">
+            <Label 
+                Style="{StaticResource LabelLarge}"
+                Text="Username:"/>
+            <Entry 
+                PlaceholderColor="{StaticResource SystemGrayDark}"
+                Placeholder="Username"/>
+            <Label 
+                Style="{StaticResource LabelLarge}"
+                Text="Password:"/>
+            <Entry 
+                PlaceholderColor="{StaticResource SystemGrayDark}"
+                IsPassword="True" Placeholder="Password"/>
+            <Button 
+                Style="{StaticResource ButtonOutline}"
+                Text="Login" Clicked="Button_Clicked"/>
+            <Label 
+                Style="{StaticResource LabelLarge}"
+                Text="Register" HorizontalOptions="Center">
+                <Label.GestureRecognizers>
+                    <TapGestureRecognizer Tapped="TapGestureRecognizer_Tapped"/>
+                </Label.GestureRecognizers>
+            </Label>
+        </StackLayout>
+    </ContentPage.Content>
+</ContentPage>
